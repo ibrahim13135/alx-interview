@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 def generate_pascal_triangle(num_rows: int) -> list:
     """
     Generate a Pascal's Triangle with a specified number of rows.
