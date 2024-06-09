@@ -12,30 +12,24 @@ Usage Example:
     canUnlockAll([[1, 4], [2], [0, 4, 1], [3], [], [4, 1], [5, 6]])
 """
 
-from typing import List
 
-
-def canUnlockAll(boxes: List[List[int]]) -> bool:
+def canUnlockAll(boxes):
     """
-    Determines if all the boxes can be opened.
-
-    Args:
-        boxes (List[List[int]]): A list of lists where each sublist contains
-        keys to other boxes.
-
-    Returns:
-        bool: True if all boxes can be opened, else False.
+    Determines whether a series of locked boxes can be opened
+    based on keys that can be attained.
+    Solution to the lockboxes problem
     """
-    n = len(boxes)
-    visited = set()
-    stack = [0]
+    if (type(boxes)) is not list:
+        return False
+    elif (len(boxes)) == 0:
+        return False
 
-    while stack:
-        box = stack.pop()
-        if box not in visited:
-            visited.add(box)
-            for key in boxes[box]:
-                if key < n:
-                    stack.append(key)
-
-    return len(visited) == n
+    for k in range(1, len(boxes) - 1):
+        boxes_checked = False
+        for idx in range(len(boxes)):
+            boxes_checked = k in boxes[idx] and k != idx
+            if boxes_checked:
+                break
+        if boxes_checked is False:
+            return boxes_checked
+    return True
