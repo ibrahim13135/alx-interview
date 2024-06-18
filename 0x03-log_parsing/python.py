@@ -23,14 +23,22 @@
 
 
 
-f = open('workfile', 'rb+')
+# f = open('workfile', 'rb+')
 
-f.write(b'hello i am hima')
+# f.write(b'hello i am hima')
 
-f.seek(5)
+# f.seek(5)
 
-print(f.read(1))
+# print(f.read(1))
 
-f.seek(-3, 2)
+# f.seek(-3, 2)
 
-print(f.read(1))
+# print(f.read(1))
+
+import json
+
+x = [1, "hima", "sondos"]
+
+
+with open('data.json', 'w', encoding='utf-8') as f:
+    json.dump(x, f)
