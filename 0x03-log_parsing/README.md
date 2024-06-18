@@ -159,16 +159,45 @@ print('Jack: {Jack:d}; Sjoerd: {Sjoerd:d}; Dcab: {Dcab:d}'.format(**table))
 Use string methods for custom formatting.
 
 Example:
+
+**Code:**
 ```python
 for x in range(1, 11):
     print(repr(x).rjust(2), repr(x*x).rjust(3), end=' ')
     print(repr(x*x*x).rjust(4))
-# Output:
-#  1   1    1
-#  2   4    8
-#  ...
-# 10 100 1000
 ```
+**Explanation:**
+
+This code uses a `for` loop to iterate over the numbers from 1 to 10 (inclusive). For each iteration, it prints three values: `x`, `x*x`, and `x*x*x`. Here's what's happening in each iteration:
+
+1. `print(repr(x).rjust(2), repr(x*x).rjust(3), end=' ')`:
+	* `repr(x)` converts the integer `x` to a string representation.
+	* `.rjust(2)` right-justifies the string in a field of width 2. This means that the string will be padded with spaces on the left to occupy a minimum of 2 characters.
+	* `repr(x*x)` converts the result of `x*x` to a string representation.
+	* `.rjust(3)` right-justifies the string in a field of width 3.
+	* `end=' '` sets the separator between the two print statements to a space character. This means that the next `print` statement will start printing from the same line, separated by a space.
+2. `print(repr(x*x*x).rjust(4))`:
+	* `repr(x*x*x)` converts the result of `x*x*x` to a string representation.
+	* `.rjust(4)` right-justifies the string in a field of width 4.
+	* Since there's no `end=' '` argument, this `print` statement will start a new line.
+
+**Output:**
+The output will be a table with three columns, where each row represents the values of `x`, `x*x`, and `x*x*x` for a particular `x` value. The columns will be right-justified with the specified widths.
+
+Here's a sample output:
+```
+ 1   1    1
+ 2   4    8
+ 3   9   27
+ 4  16   64
+ 5  25  125
+ 6  36  216
+ 7  49  343
+ 8  64  512
+ 9  81  729
+10 100 1000
+```
+Note that the exact output may vary depending on the Python interpreter and its version.
 
 ### 7.1.4 Old String Formatting
 
