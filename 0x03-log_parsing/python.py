@@ -37,8 +37,13 @@
 
 import json
 
-x = [1, "hima", "sondos"]
+# x = [1, "hima", "sondos"]
 
 
-with open('data.json', 'w', encoding='utf-8') as f:
-    json.dump(x, f)
+# with open('data.json', 'w', encoding='utf-8') as f:
+#     json.dump(x, f)
+
+with open('data.json', 'r') as f:
+    x = json.load(f)
+
+print(x)

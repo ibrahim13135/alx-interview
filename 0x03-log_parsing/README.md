@@ -447,7 +447,193 @@ The `signal` module in Python provides mechanisms to handle asynchronous events 
 - **sigwaitinfo(sigset)**: Suspends execution and returns information about the signal.
 - **sigtimedwait(sigset, timeout)**: Like `sigwaitinfo()`, but with a timeout.
 
-### Examples
+
+#### 1. `alarm(time)`
+Schedules a `SIGALRM` signal to be sent to the process after a specified number of seconds.
+
+**Example**:
+```python
+import signal
+import time
+
+def handler(signum, frame):
+    print("Alarm received!")
+
+signal.signal(signal.SIGALRM, handler)
+signal.alarm(5)  # Alarm in 5 seconds
+time.sleep(10)  # Wait to receive the alarm
+```
+
+#### 2. `getsignal(signalnum)`
+Returns the current signal handler for `signalnum`.
+
+**Example**:
+```python
+import signal
+
+handler = signal.getsignal(signal.SIGALRM)
+print(handler)
+```
+
+#### 3. `pause()`
+Suspends the process until a signal is received.
+
+**Example**:
+```python
+import signal
+import os
+
+def handler(signum, frame):
+    print("Signal received, continuing execution")
+
+signal.signal(signal.SIGUSR1, handler)
+print("Pausing until signal is received...")
+os.kill(os.getpid(), signal.SIGUSR1)  # Send signal to itself
+signal.pause()
+```
+
+#### 4. `raise_signal(signum)`
+Sends a signal to the calling process.
+
+**Example**:
+```python
+import signal
+
+def handler(signum, frame):
+    print("Signal received!")
+
+signal.signal(signal.SIGUSR1, handler)
+signal.raise_signal(signal.SIGUSR1)
+```
+
+#### 5. `pthread_kill(thread_id, signalnum)`
+Sends a signal to a specific thread.
+
+**Example**:
+```python
+import signal
+import threading
+
+def handler(signum, frame):
+    print("Signal received in thread!")
+
+def thread_function():
+    signal.signal(signal.SIGUSR1, handler)
+    signal.pause()
+
+thread = threading.Thread(target=thread_function)
+thread.start()
+signal.pthread_kill(thread.ident, signal.SIGUSR1)
+thread.join()
+```
+
+#### 6. `setitimer(which, seconds, interval=0.0)`
+Sets an interval timer.
+
+**Example**:
+```python
+import signal
+
+def handler(signum, frame):
+    print("Timer signal received!")
+
+signal.signal(signal.SIGALRM, handler)
+signal.setitimer(signal.ITIMER_REAL, 2, 1)  # First alarm in 2 sec, then every 1 sec
+signal.pause()
+```
+
+#### 7. `getitimer(which)`
+Returns the current value of an interval timer.
+
+**Example**:
+```python
+import signal
+
+signal.setitimer(signal.ITIMER_REAL, 2, 1)
+remaining, interval = signal.getitimer(signal.ITIMER_REAL)
+print(f"Remaining: {remaining}, Interval: {interval}")
+```
+
+#### 8. `siginterrupt(signalnum, flag)`
+Changes system call restart behavior.
+
+**Example**:
+```python
+import signal
+
+signal.siginterrupt(signal.SIGALRM, True)
+```
+
+#### 9. `signal(signalnum, handler)`
+Sets the signal handler for `signalnum`.
+
+**Example**:
+```python
+import signal
+
+def handler(signum, frame):
+    print("Signal received!")
+
+signal.signal(signal.SIGUSR1, handler)
+```
+
+#### 10. `sigpending()`
+Returns the set of pending signals.
+
+**Example**:
+```python
+import signal
+import os
+
+signal.raise_signal(signal.SIGUSR1)
+pending = signal.sigpending()
+print(pending)
+```
+
+#### 11. `sigwait(sigset)`
+Suspends execution until a specified signal is received.
+
+**Example**:
+```python
+import signal
+
+sigset = {signal.SIGUSR1}
+print("Waiting for signal...")
+signal.sigwait(sigset)
+print("Signal received!")
+```
+
+#### 12. `sigwaitinfo(sigset)`
+Suspends execution and returns information about the signal.
+
+**Example**:
+```python
+import signal
+
+sigset = {signal.SIGUSR1}
+print("Waiting for signal info...")
+info = signal.sigwaitinfo(sigset)
+print("Signal received!", info)
+```
+
+#### 13. `sigtimedwait(sigset, timeout)`
+Like `sigwaitinfo()`, but with a timeout.
+
+**Example**:
+```python
+import signal
+
+sigset = {signal.SIGUSR1}
+print("Waiting for signal info with timeout...")
+info = signal.sigtimedwait(sigset, 5)  # Timeout after 5 seconds
+if info is None:
+    print("Timeout, no signal received.")
+else:
+    print("Signal received!", info)
+```
+
+
+
 - **Timeout with Alarm**: Example of using `signal.alarm()` to avoid hanging operations.
 ```python
 import signal, os
