@@ -17,6 +17,20 @@
 
 
 
-for x in range(1, 11):
-    print(repr(x).rjust(2), repr(x*x).rjust(3), end=' ')
-    print(repr(x*x*x).rjust(4))
+# for x in range(1, 11):
+#     print(repr(x).rjust(2), repr(x*x).rjust(3), end=' ')
+#     print(repr(x*x*x).rjust(4))
+
+
+
+f = open('workfile', 'rb+')
+
+f.write(b'hello i am hima')
+
+f.seek(5)
+
+print(f.read(1))
+
+f.seek(-3, 2)
+
+print(f.read(1))

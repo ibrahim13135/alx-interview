@@ -259,6 +259,57 @@ f.seek(-3, 2)
 print(f.read(1))  # Output: b'd'
 ```
 
+
+**Lines 1-2:**
+```python
+f = open('workfile', 'rb+')
+```
+Here, we're opening a file called `workfile` in binary read-write mode (`'rb+'`). The `+` sign indicates that we want to open the file for both reading and writing. If the file doesn't exist, it will be created.
+
+**Lines 3-4:**
+```python
+f.write(b'hello i am hima')
+```
+We write a byte string (`b'hello i am hima'`) to the file. The `b` prefix indicates a byte string literal.
+
+**Line 5:**
+```python
+f.seek(5)
+```
+We move the file pointer to the 5th byte (0-indexed) in the file using the `seek()` method. This means we're positioning the file pointer at the 6th character (`'o'`) in the string "hello i am hima".
+
+**Line 6:**
+```python
+print(f.read(1))
+```
+We read a single byte (1 byte) from the file using the `read()` method. Since the file pointer is at the 5th byte, we read the 6th byte (`'o'`). The `print()` function outputs the read byte as a byte string (`b'o'`).
+
+**Line 7:**
+```python
+f.seek(-3, 2)
+```
+We move the file pointer to the 3rd byte from the end of the file using the `seek()` method with the `whence` argument set to `2` (SEEK_END). This means we're positioning the file pointer at the 3rd byte from the end of the file.
+
+**Line 8:**
+```python
+print(f.read(1))
+```
+We read a single byte (1 byte) from the file using the `read()` method. Since the file pointer is at the 3rd byte from the end, we read the 3rd byte from the end (`'m'`). The `print()` function outputs the read byte as a byte string (`b'm'`).
+
+In summary, this code:
+
+1. Opens a file in binary read-write mode.
+2. Writes a byte string to the file.
+3. Moves the file pointer to the 5th byte and reads a single byte (`'o'`).
+4. Moves the file pointer to the 3rd byte from the end of the file and reads a single byte (`'m'`).
+
+The output of this code would be:
+```
+b'o'
+b'm'
+```
+
+
 ### 7.2.2 Saving Structured Data with JSON
 
 Python’s `json` module can serialize and deserialize data.
