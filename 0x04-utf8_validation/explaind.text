@@ -1,0 +1,97 @@
+To solve the problem of validating UTF-8 encoding in a list of integers, we need to follow the UTF-8 encoding rules. UTF-8 encoding allows a character to be from 1 to 4 bytes long, and each byte has a specific pattern. Here’s the breakdown of the UTF-8 encoding rules:
+
+1. For a 1-byte character, the first bit is 0, and the next 7 bits are the character code.
+2. For a 2-byte character, the first three bits are 110, followed by 5 bits of the character code, and the next byte starts with 10.
+3. For a 3-byte character, the first four bits are 1110, followed by 4 bits of the character code, and each of the next two bytes starts with 10.
+4. For a 4-byte character, the first five bits are 11110, followed by 3 bits of the character code, and each of the next three bytes starts with 10.
+
+We need to implement a function that checks if a given list of integers follows these rules.
+
+Here is the implementation of the `validUTF8` function:
+
+```python
+#!/usr/bin/python3
+"""
+This module contains a function to validate UTF-8 encoding.
+"""
+
+def validUTF8(data):
+    """
+    Determines if a given data set represents a valid UTF-8 encoding.
+
+    Args:
+        data (list): List of integers representing the data set.
+
+    Returns:
+        bool: True if data is a valid UTF-8 encoding, else False.
+    """
+    num_bytes = 0
+
+    # Masks to check the most significant bits
+    mask1 = 1 << 7
+    mask2 = 1 << 6
+
+    for num in data:
+        mask = 1 << 7
+        if num_bytes == 0:
+            # Determine the number of bytes in the UTF-8 character
+            while mask & num:
+                num_bytes += 1
+                mask = mask >> 1
+
+            if num_bytes == 0:
+                continue
+
+            if num_bytes == 1 or num_bytes > 4:
+                return False
+        else:
+            # For each byte in the character, ensure it starts with 10
+            if not (num & mask1 and not (num & mask2)):
+                return False
+
+        num_bytes -= 1
+
+    return num_bytes == 0
+```
+
+### Explanation:
+
+1. **Initialization**: We start with `num_bytes` set to 0, which keeps track of how many bytes are left in the current UTF-8 character sequence.
+
+2. **Masks**: We define `mask1` and `mask2` to check the most significant bits (MSBs) of each byte.
+
+3. **Loop through data**: For each number in the data list:
+   - If `num_bytes` is 0, we determine the number of bytes in the current UTF-8 character.
+     - We use a while loop to count the leading 1s in the byte (which determine the number of bytes in the character).
+     - If `num_bytes` is 0, it means it's a 1-byte character, so we continue to the next number.
+     - If `num_bytes` is 1 or greater than 4, it's invalid UTF-8, so we return False.
+   - If `num_bytes` is not 0, it means we are in the middle of a multi-byte character, and each byte should start with `10`.
+     - We check if the byte starts with `10` using the masks `mask1` and `mask2`. If not, we return False.
+
+4. **Final Check**: After the loop, we check if `num_bytes` is 0. If it's not 0, it means there was an incomplete character sequence at the end, so we return False. Otherwise, we return True.
+
+### Testing
+
+The provided `0-main.py` script can be used to test this function:
+
+```python
+#!/usr/bin/python3
+"""
+Main file for testing
+"""
+
+validUTF8 = __import__('0-validate_utf8').validUTF8
+
+data = [65]
+print(validUTF8(data))  # True
+
+data = [80, 121, 116, 104, 111, 110, 32, 105, 115, 32, 99, 111, 111, 108, 33]
+print(validUTF8(data))  # True
+
+data = [229, 65, 127, 256]
+print(validUTF8(data))  # False
+```
+
+Make sure your `README.md` file and all your scripts follow the given requirements (PEP 8 style, executable permissions, etc.).
+
+Feel free to ask if you need any further assistance!
